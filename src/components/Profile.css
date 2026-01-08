@@ -1,0 +1,78 @@
+.profile {
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+.profile-header {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.profile-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+}
+
+.profile-info h2 {
+  margin-bottom: 0.25rem;
+}
+
+.profile-bio {
+  color: #666;
+  margin-bottom: 0.5rem;
+}
+
+.profile-location {
+  color: #666;
+  font-size: 0.875rem;
+}
+
+.profile-stats {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin: 1rem 0;
+  font-size: 0.875rem;
+  color: #555;
+}
+.profile-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center; /* Vertically centers items */
+  justify-content: center; /* Horizontally centers items */
+  margin-top: 1rem; /* Optional: adds space above the buttons */
+}
+.profile-link {
+  padding: 0.5rem 1rem; /* Added padding to match the button look */
+  text-decoration: none;
+  color: inherit;
+  /* Removed margin-bottom to keep flex alignment clean */
+}
+
+.profile-toggle {
+  background-color: #f0f0f0;
+  padding: 0.5rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.875rem;
+}
+
+.profile-toggle:hover {
+  background: #e5e5e5;
+}
+
+.loading,
+.error {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+}
+
+.error {
+  color: #cc0000;
+}

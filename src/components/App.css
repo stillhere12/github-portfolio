@@ -1,0 +1,11 @@
+.app {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.app-title {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #222;
+}
