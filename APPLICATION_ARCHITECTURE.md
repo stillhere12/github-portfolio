@@ -1,6 +1,7 @@
 # GitHub User Search Application - Architecture Documentation
 
 ## Table of Contents
+
 1. [Application Overview](#application-overview)
 2. [Data Flow](#data-flow)
 3. [Component Architecture](#component-architecture)
@@ -17,17 +18,19 @@
 A React + TypeScript application for searching GitHub users and displaying their profiles and repositories.
 
 ### Tech Stack
-| Layer | Technology |
-|-------|------------|
-| Framework | React 19 |
-| Language | TypeScript 5.9 |
-| Build Tool | Vite 7 |
+
+| Layer            | Technology            |
+| ---------------- | --------------------- |
+| Framework        | React 19              |
+| Language         | TypeScript 5.9        |
+| Build Tool       | Vite 7                |
 | State Management | React Query + Zustand |
-| Form Handling | React Hook Form |
-| Validation | Zod |
-| API | GitHub REST API |
+| Form Handling    | React Hook Form       |
+| Validation       | Zod                   |
+| API              | GitHub REST API       |
 
 ### Directory Structure
+
 ```
 src/
 ├── components/          # UI Components
@@ -60,6 +63,7 @@ src/
 ## Data Flow
 
 ### High-Level Flow Diagram
+
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
 │                        USER INTERFACE                                │
@@ -78,7 +82,7 @@ src/
 ┌─────────────────────────────────────────────────────────────────────┐
 │  HOOKS LAYER (Data Fetching)                                        │
 │  ┌────────────────────────┐    ┌────────────────────────┐           │
-│  │ useGithubUser()        │    │ useGithubRepos()       │           │
+│  │ `useGithubUser()  `      │    │ useGithubRepos()       │           │
 │  │ - Caches user data     │    │ - Caches repo data     │           │
 │  │ - Handles loading      │    │ - Handles loading      │           │
 │  │ - Manages errors       │    │ - Manages errors       │           │
@@ -151,6 +155,7 @@ src/
 ## Component Architecture
 
 ### Component Hierarchy
+
 ```
 App
 └── QueryClientProvider
@@ -164,14 +169,14 @@ App
 
 ### Component Responsibilities
 
-| Component | Responsibility | Props |
-|-----------|---------------|-------|
-| **App** | Root component, providers setup | None |
-| **SearchBar** | Form input, validation, search trigger | None |
-| **Profile** | Display user avatar, name, bio, stats | `user: GithubUser` |
-| **RepoList** | Map and render repository cards | `repos: GithubRepo[]` |
-| **RepoCard** | Display single repo info | `repo: GithubRepo` |
-| **ErrorMessage** | Display error states | `error: Error` |
+| Component        | Responsibility                         | Props                 |
+| ---------------- | -------------------------------------- | --------------------- |
+| **App**          | Root component, providers setup        | None                  |
+| **SearchBar**    | Form input, validation, search trigger | None                  |
+| **Profile**      | Display user avatar, name, bio, stats  | `user: GithubUser`    |
+| **RepoList**     | Map and render repository cards        | `repos: GithubRepo[]` |
+| **RepoCard**     | Display single repo info               | `repo: GithubRepo`    |
+| **ErrorMessage** | Display error states                   | `error: Error`        |
 
 ---
 
@@ -180,6 +185,7 @@ App
 ### Service Functions
 
 #### `fetchGithubUser(userName: string)`
+
 ```typescript
 // Location: src/features/services/github.service.ts
 // Purpose: Fetch user profile from GitHub API
@@ -187,7 +193,7 @@ App
 
 async function fetchGithubUser(userName: string): Promise<GithubUser> {
   const res = await fetch(`${BASE_URL}/users/${userName}`, {
-    headers: { Authorization: `Bearer ${token}` }
+    headers: { Authorization: `Bearer ${token}` },
   });
   const data = await res.json();
   return GithubUserSchema.parse(data);
@@ -195,6 +201,7 @@ async function fetchGithubUser(userName: string): Promise<GithubUser> {
 ```
 
 #### `fetchGithubRepos(userName: string)`
+
 ```typescript
 // Location: src/features/services/github.service.ts
 // Purpose: Fetch user repositories from GitHub API
@@ -202,7 +209,7 @@ async function fetchGithubUser(userName: string): Promise<GithubUser> {
 
 async function fetchGithubRepos(userName: string): Promise<GithubRepo[]> {
   const res = await fetch(`${BASE_URL}/users/${userName}/repos`, {
-    headers: { Authorization: `Bearer ${token}` }
+    headers: { Authorization: `Bearer ${token}` },
   });
   const data = await res.json();
   return GithubReposSchema.parse(data);
@@ -212,6 +219,7 @@ async function fetchGithubRepos(userName: string): Promise<GithubRepo[]> {
 ### Custom Hooks
 
 #### `useGithubUser(userName: string)`
+
 ```typescript
 // Location: src/features/hooks/useGithubUser.tsx
 // Purpose: React Query wrapper for user fetching with caching
@@ -227,6 +235,7 @@ function useGithubUser(userName: string) {
 ```
 
 #### `useGithubRepos(userName: string)`
+
 ```typescript
 // Location: src/features/hooks/useGithubRepos.tsx
 // Purpose: React Query wrapper for repos fetching with caching
@@ -244,6 +253,7 @@ function useGithubRepos(userName: string) {
 ### Validation Schemas
 
 #### `GithubUserSchema`
+
 ```typescript
 // Location: src/features/schemas/user.schema.ts
 const GithubUserSchema = z.object({
@@ -261,19 +271,22 @@ const GithubUserSchema = z.object({
 ```
 
 #### `GithubReposSchema`
+
 ```typescript
 // Location: src/features/schemas/repo.schema.ts
-const GithubReposSchema = z.array(z.object({
-  id: z.number(),
-  name: z.string(),
-  full_name: z.string(),
-  description: z.string().nullable(),
-  html_url: z.string().url(),
-  stargazers_count: z.number(),
-  forks_count: z.number(),
-  language: z.string().nullable(),
-  // ... more fields
-}));
+const GithubReposSchema = z.array(
+  z.object({
+    id: z.number(),
+    name: z.string(),
+    full_name: z.string(),
+    description: z.string().nullable(),
+    html_url: z.string().url(),
+    stargazers_count: z.number(),
+    forks_count: z.number(),
+    language: z.string().nullable(),
+    // ... more fields
+  })
+);
 ```
 
 ---
@@ -281,6 +294,7 @@ const GithubReposSchema = z.array(z.object({
 ## SearchBar.tsx Structure Guide
 
 ### Current Implementation Issues
+
 1. Direct API call instead of using React Query hook
 2. No loading state handling
 3. No error display
@@ -303,11 +317,11 @@ import ErrorMessage from './ErrorMessage';
 
 // 1. VALIDATION SCHEMA
 const inputSchema = z.object({
-  name: z.string()
+  name: z
+    .string()
     .min(1, 'Username is required')
     .max(39, 'GitHub usernames cannot exceed 39 characters')
-    .regex(/^[a-zA-Z0-9](?:[a-zA-Z0-9]|-(?=[a-zA-Z0-9])){0,38}$/,
-           'Invalid GitHub username format'),
+    .regex(/^[a-zA-Z0-9](?:[a-zA-Z0-9]|-(?=[a-zA-Z0-9])){0,38}$/, 'Invalid GitHub username format'),
 });
 
 type FormInput = z.infer<typeof inputSchema>;
@@ -335,10 +349,7 @@ export default function SearchBar() {
     error: userErrorData,
   } = useGithubUser(searchedUser);
 
-  const {
-    data: repos,
-    isLoading: reposLoading,
-  } = useGithubRepos(searchedUser);
+  const { data: repos, isLoading: reposLoading } = useGithubRepos(searchedUser);
 
   // 3. SUBMIT HANDLER
   const onSubmit = async (data: FormInput) => {
@@ -363,11 +374,7 @@ export default function SearchBar() {
             aria-label="GitHub username"
             autoComplete="off"
           />
-          <button
-            type="submit"
-            disabled={isSubmitting || isLoading}
-            className="search-button"
-          >
+          <button type="submit" disabled={isSubmitting || isLoading} className="search-button">
             {isLoading ? 'Searching...' : 'Search'}
           </button>
         </div>
@@ -388,9 +395,7 @@ export default function SearchBar() {
       )}
 
       {/* Error State */}
-      {userError && (
-        <ErrorMessage error={userErrorData as Error} />
-      )}
+      {userError && <ErrorMessage error={userErrorData as Error} />}
 
       {/* Results */}
       {user && !isLoading && (
@@ -406,14 +411,14 @@ export default function SearchBar() {
 
 ### Key Improvements Explained
 
-| Aspect | Before | After |
-|--------|--------|-------|
-| **API Calls** | Direct fetch in onSubmit | React Query hooks with caching |
-| **Loading State** | None | Proper loading indicators |
-| **Error Handling** | Console.log only | ErrorMessage component |
-| **Validation** | Basic min/max | Full GitHub username regex |
-| **Accessibility** | None | aria-labels, roles |
-| **UX** | No feedback | Disabled states, feedback messages |
+| Aspect             | Before                   | After                              |
+| ------------------ | ------------------------ | ---------------------------------- |
+| **API Calls**      | Direct fetch in onSubmit | React Query hooks with caching     |
+| **Loading State**  | None                     | Proper loading indicators          |
+| **Error Handling** | Console.log only         | ErrorMessage component             |
+| **Validation**     | Basic min/max            | Full GitHub username regex         |
+| **Accessibility**  | None                     | aria-labels, roles                 |
+| **UX**             | No feedback              | Disabled states, feedback messages |
 
 ---
 
@@ -422,6 +427,7 @@ export default function SearchBar() {
 ### Pre-Deployment Checklist
 
 #### 1. Environment Configuration
+
 ```bash
 # .env.production
 VITE_GITHUB_TOKEN=your_production_token
@@ -430,21 +436,22 @@ VITE_APP_ENV=production
 ```
 
 #### 2. Security Measures
+
 ```typescript
 // NEVER expose tokens in client-side code for production
 // Use a backend proxy instead
 
 // Backend proxy example (Node.js/Express)
 app.get('/api/github/users/:username', async (req, res) => {
-  const response = await fetch(
-    `https://api.github.com/users/${req.params.username}`,
-    { headers: { Authorization: `Bearer ${process.env.GITHUB_TOKEN}` }}
-  );
+  const response = await fetch(`https://api.github.com/users/${req.params.username}`, {
+    headers: { Authorization: `Bearer ${process.env.GITHUB_TOKEN}` },
+  });
   res.json(await response.json());
 });
 ```
 
 #### 3. Build Optimization
+
 ```typescript
 // vite.config.ts
 export default defineConfig({
@@ -466,6 +473,7 @@ export default defineConfig({
 ### Deployment Options
 
 #### Option A: Vercel (Recommended for React)
+
 ```bash
 # Install Vercel CLI
 npm i -g vercel
@@ -475,6 +483,7 @@ vercel --prod
 ```
 
 #### Option B: AWS S3 + CloudFront
+
 ```bash
 # Build
 npm run build
@@ -486,6 +495,7 @@ aws s3 sync dist/ s3://your-bucket-name
 ```
 
 #### Option C: Docker
+
 ```dockerfile
 # Dockerfile
 FROM node:20-alpine AS builder
@@ -558,15 +568,16 @@ function App() {
 ### Business Model Options
 
 #### 1. SaaS Platform - Developer Tools
+
 Transform this into a comprehensive GitHub analytics platform:
 
-| Feature | Free Tier | Pro ($9/mo) | Enterprise ($49/mo) |
-|---------|-----------|-------------|---------------------|
-| User searches | 50/day | Unlimited | Unlimited |
-| Repo analysis | Basic | Advanced | Full |
-| Export data | - | CSV | CSV, JSON, API |
-| Team features | - | - | Yes |
-| API access | - | 1000 req/day | Unlimited |
+| Feature       | Free Tier | Pro ($9/mo)  | Enterprise ($49/mo) |
+| ------------- | --------- | ------------ | ------------------- |
+| User searches | 50/day    | Unlimited    | Unlimited           |
+| Repo analysis | Basic     | Advanced     | Full                |
+| Export data   | -         | CSV          | CSV, JSON, API      |
+| Team features | -         | -            | Yes                 |
+| API access    | -         | 1000 req/day | Unlimited           |
 
 #### 2. Feature Expansion for Revenue
 
@@ -616,19 +627,22 @@ Year 2 Scale:
 ### Technical Scaling
 
 #### Phase 1: Optimize Current Stack
+
 ```typescript
 // Implement rate limiting awareness
 const rateLimitStore = create((set) => ({
   remaining: 5000,
   resetAt: null,
-  updateLimit: (headers: Headers) => set({
-    remaining: parseInt(headers.get('X-RateLimit-Remaining') || '5000'),
-    resetAt: new Date(parseInt(headers.get('X-RateLimit-Reset') || '0') * 1000),
-  }),
+  updateLimit: (headers: Headers) =>
+    set({
+      remaining: parseInt(headers.get('X-RateLimit-Remaining') || '5000'),
+      resetAt: new Date(parseInt(headers.get('X-RateLimit-Reset') || '0') * 1000),
+    }),
 }));
 ```
 
 #### Phase 2: Backend Services
+
 ```
                     ┌─────────────┐
                     │   Load      │
@@ -657,6 +671,7 @@ const rateLimitStore = create((set) => ({
 ```
 
 #### Phase 3: Microservices Architecture
+
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
 │                     MICROSERVICES ARCHITECTURE                       │
@@ -678,12 +693,12 @@ const rateLimitStore = create((set) => ({
 
 ### Performance Targets
 
-| Metric | Current | Target | Enterprise |
-|--------|---------|--------|------------|
-| Time to First Byte | ~500ms | <100ms | <50ms |
-| Search Response | ~800ms | <200ms | <100ms |
-| Uptime | N/A | 99.9% | 99.99% |
-| Concurrent Users | ~100 | 10,000 | 100,000 |
+| Metric             | Current | Target | Enterprise |
+| ------------------ | ------- | ------ | ---------- |
+| Time to First Byte | ~500ms  | <100ms | <50ms      |
+| Search Response    | ~800ms  | <200ms | <100ms     |
+| Uptime             | N/A     | 99.9%  | 99.99%     |
+| Concurrent Users   | ~100    | 10,000 | 100,000    |
 
 ### Growth Checklist
 

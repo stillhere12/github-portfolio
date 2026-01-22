@@ -55,15 +55,11 @@
 }
 
 .profile-toggle {
-  background-color: #f0f0f0;
+  background-color: black;
   padding: 0.5rem 1rem;
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 0.875rem;
-}
-
-.profile-toggle:hover {
-  background: #e5e5e5;
 }
 
 .loading,
