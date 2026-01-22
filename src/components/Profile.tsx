@@ -14,11 +14,6 @@ const Profile = ({ search, showRepos, handleShowing }: ProfileProps) => {
   if (isLoading) return <div className="loading">Loading...</div>;
   if (isError) return <div className="error">Error: {error.message}</div>;
   if (!user) return null;
-  function handleShowingRepos(showRepos: boolean) {
-    if (showRepos) {
-      handleShowing(false);
-    }
-  }
   return (
     <div className="profile">
       <div className="profile-header">
