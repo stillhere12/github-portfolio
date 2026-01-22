@@ -19,7 +19,7 @@ export default function SearchBar() {
     resolver: zodResolver(inputSchema),
     // zodResolver expected an object schema
   });
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: z.infer<typeof inputSchema>) => {
     console.log(data.name);
     setSearchedFor(data.name);
     setShowRepos(false);
